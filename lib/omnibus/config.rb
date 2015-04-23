@@ -253,6 +253,12 @@ module Omnibus
       end
     end
 
+    # Rewrite download urls
+    #
+    # this is useful when using a internal caching hosts
+    # where access to the internet is limited
+    default(:net_fetcher_url_rewrite, '')
+
     # --------------------------------------------------
     # @!endgroup
     #

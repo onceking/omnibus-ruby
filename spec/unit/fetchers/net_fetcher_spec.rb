@@ -139,6 +139,16 @@ module Omnibus
         end
       end
 
+      context 'when template is given' do
+        before do
+          Config.net_fetcher_url_rewrite '<%= "http://cache.megacorp.com/#{File.basename(source[:url])[0]}/#{File.basename(source[:url])}" %>'
+        end
+
+        it 'should rewrite url based on template' do
+          expect(subject.download_url).to eq('http://cache.megacorp.com/f/file.tar.gz')
+        end
+      end
+
       it 'should return source url as-is' do
         expect(subject.download_url).to eq('https://get.example.com/file.tar.gz')
       end

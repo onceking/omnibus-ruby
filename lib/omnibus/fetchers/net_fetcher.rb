@@ -136,6 +136,8 @@ module Omnibus
     def download_url
       if Config.use_s3_caching
         "http://#{Config.s3_bucket}.s3.amazonaws.com/#{S3Cache.key_for(self)}"
+      elsif !Config.net_fetcher_url_rewrite.empty?
+        ERB.new(Config.net_fetcher_url_rewrite).result binding
       else
         source[:url]
       end
