@@ -175,7 +175,10 @@ module Omnibus
     end
 
     describe '#extract_command' do
-      before { Config.source_dir('/tmp/out') }
+      before do
+        Config.source_dir('/tmp/out')
+        allow(Omnibus).to receive(:which).with('gtar').and_return(nil)
+      end
 
       context 'on Windows' do
         before do
@@ -194,7 +197,7 @@ module Omnibus
         it_behaves_like 'an extractor', 'tar.xz',  'tar Jxf C:\\file.tar.xz -C/tmp/out'
       end
 
-      context 'on Linux' do
+      context 'on Linux without gtar' do
         before do
           Config.cache_dir('/')
           stub_ohai(platform: 'ubuntu', version: '12.04')
