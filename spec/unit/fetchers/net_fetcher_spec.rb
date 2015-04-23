@@ -123,6 +123,27 @@ module Omnibus
       end
     end
 
+    describe '#download_url' do
+      before do
+        described_class.send(:public, :download_url)
+      end
+
+      context 'when s3 caching is enabled' do
+        before do
+          Config.use_s3_caching true
+          Config.s3_bucket 'omnibus-test'
+        end
+
+        it 'should rewrite into s3 url' do
+          expect(subject.download_url).to eq('http://omnibus-test.s3.amazonaws.com/file-1.2.3-abcd1234')
+        end
+      end
+
+      it 'should return source url as-is' do
+        expect(subject.download_url).to eq('https://get.example.com/file.tar.gz')
+      end
+    end
+
     describe '#extract' do
       before do
         described_class.send(:public, :extract)
