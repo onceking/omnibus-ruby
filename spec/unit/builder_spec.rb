@@ -128,6 +128,9 @@ module Omnibus
 
     describe '#make' do
       before do
+        allow(Omnibus).to receive(:which)
+          .with('gmake')
+          .and_return(nil)
         allow(subject).to receive(:command)
       end
 
@@ -153,17 +156,9 @@ module Omnibus
         end
       end
 
-      context 'when gmake is not present' do
-        before do
-          allow(Omnibus).to receive(:which)
-            .and_return(nil)
-        end
-
-        it 'uses make' do
-          expect(subject).to receive(:command)
-            .with('make', {})
-          subject.make
-        end
+      it 'uses make' do
+        expect(subject).to receive(:command).with('make', {})
+        subject.make
       end
 
       it 'accepts 0 options' do
